@@ -34,7 +34,7 @@ public class cue2 extends cueAbs {
     }
 
     public Image getImg() throws IOException {
-        poolCueImg = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/cue2.png"));
+        poolCueImg = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/stecca2.png"));
         poolCueImg=poolCueImg.getScaledInstance(300,40,0);
         return poolCueImg;
     }

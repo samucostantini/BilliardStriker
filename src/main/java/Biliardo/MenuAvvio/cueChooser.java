@@ -30,13 +30,13 @@ public class cueChooser extends JFrame {
         }
         BufferedImage cue2 = new BufferedImage(200,20,1);
         try {
-            cue2 = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/cue2.png"));
+            cue2 = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/stecca2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         BufferedImage cue3 = new BufferedImage(200,30,1);
         try {
-            cue3 = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/cue3.png"));
+            cue3 = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/stecca3.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
