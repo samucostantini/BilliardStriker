@@ -222,7 +222,6 @@ public class Ball implements Ball_Interface {
                 setXposition(getXposition() + dx);
                 setMovimentoRimanente(movimentoRimanente- Math.abs(dx) - Math.abs(dy));
                 if (getXposition() + getRadius() >= 877) {
-                    //MODIFICA QUELLO 0 CON LA POSIZIONE DEI BORDI DEL CAMPO
                     c.hitWall(Ball.this,0);
                 }
             }
@@ -230,7 +229,7 @@ public class Ball implements Ball_Interface {
                 setXposition(getXposition() - dx);
                 setMovimentoRimanente(movimentoRimanente - Math.abs(dx) - Math.abs(dy));
                 if (getXposition() - getRadius()*2 <= 322) {
-                    //MODIFICA QUELLO 0 CON LA POSIZIONE DEI BORDI DEL CAMPO
+
                     c.hitWall(Ball.this,0);
                 }
             }
@@ -238,7 +237,7 @@ public class Ball implements Ball_Interface {
                 setYposition(getYposition() + dy);
                 setMovimentoRimanente(movimentoRimanente - Math.abs(dx) - Math.abs(dy));
                 if (getYposition() + getRadius()*2 >= 580) {
-                    //MODIFICA QUELLO 0 CON LA POSIZIONE DEI BORDI DEL CAMPO
+
                     c.hitWall(Ball.this,1);
                 }
             }
@@ -246,11 +245,11 @@ public class Ball implements Ball_Interface {
                 setYposition(getYposition() - dy);
                 setMovimentoRimanente(movimentoRimanente - Math.abs(dx) - Math.abs(dy));
                 if (getYposition() - getRadius()*2 <= 240) {
-                    //MODIFICA QUELLO 0 CON LA POSIZIONE DEI BORDI DEL CAMPO
+
                     c.hitWall(Ball.this,1);
                 }
             }
-            // CONTROLLA LE COLLISIONI CON L'ARRAY DI PALLE
+
 
         }
         if (componenteVelocitaX ==0 && componenteVelocitaY ==0) {
@@ -258,14 +257,9 @@ public class Ball implements Ball_Interface {
             dx =0;
             movimentoRimanente=0;
         }
-        // CONTROLLA LE COLLISIONI CON L'ARRAY DI PALLE
+
 
     }
-
-    /*public void cycle(){
-        System.out.println("in");
-        //MoveBall();
-    }*/
 
 
 }

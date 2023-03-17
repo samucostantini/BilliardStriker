@@ -62,7 +62,7 @@ public class Table extends JPanel implements ActionListener {
 
     JLabel shoot_label=new JLabel();
     int num=0;
-    Random random=new Random();
+
     int turno=0;
 
     Point initialPos=new Point(x_board+50,BOARD_HEIGHT/2);
@@ -104,16 +104,9 @@ public class Table extends JPanel implements ActionListener {
 
         //-----------------------------------------------------------------------------------------------------------
         steccaP = cueFactory.getCue(String.valueOf(cueChooser.set_cue));
-
-
-
         pack=ImagePackage.getPack();
-
         pit= PitPosition.setPit();
         loadImage();
-        //moveCue();
-        //checkCollision();
-
         timer = new Timer(DELAY, this);
         timer.start();
         setVisible(true);

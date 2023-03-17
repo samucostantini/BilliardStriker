@@ -5,7 +5,9 @@ import Biliardo.MenuAvvio.cueChooser;
 
 import java.util.Random;
 
-public class ShootBall extends Table{
+import static Biliardo.Table.whiteBall;
+
+public class ShootBall {
 
     public static void shootb(int x,int y) {
                 whiteBall.setComponenteVelocitaX((whiteBall.getXposition() - x) * 5);
