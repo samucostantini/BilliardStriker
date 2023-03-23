@@ -1,8 +1,5 @@
 package Biliardo;
 
-import Biliardo.MenuAvvio.Board;
-import Biliardo.MenuAvvio.cueChooser;
-
 import java.util.Random;
 
 import static Biliardo.Table.whiteBall;
@@ -10,8 +7,8 @@ import static Biliardo.Table.whiteBall;
 public class ShootBall {
 
     public static void shootb(int x,int y) {
-                whiteBall.setComponenteVelocitaX((whiteBall.getXposition() - x) * 5);
-                whiteBall.setComponenteVelocitaY((whiteBall.getYposition() - y) * 5);
+                whiteBall.setComponenteVelocitaX((whiteBall.getXposition() - x) *3);
+                whiteBall.setComponenteVelocitaY((whiteBall.getYposition() - y) *3);
                 System.out.println("tiro x "+whiteBall.getComponenteVelocitaX());
                 System.out.println("tiro y "+whiteBall.getComponenteVelocitaY());
                 whiteBall.dx = 0;

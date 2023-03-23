@@ -1,6 +1,5 @@
 package Biliardo.MenuAvvio;
 
-import Biliardo.Table;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;

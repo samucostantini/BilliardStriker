@@ -1,10 +1,13 @@
 package Biliardo;
 
-import Biliardo.GraphicPosition.InitialBallState;
-import Biliardo.GraphicPosition.PitPosition;
 import Biliardo.MenuAvvio.*;
+import Biliardo.Template.CommandPaint;
+import Biliardo.Template.ConcreteCommand;
+import Biliardo.Template.Command;
+import Biliardo.Template.ConcreteCompaint;
 import Biliardo.stecche1.*;
-import javax.imageio.ImageIO;
+import Biliardo.table.PaintTable;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -12,10 +15,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static Biliardo.Constants.*;
 import static Biliardo.MenuAvvio.Alg.Algorithms.getAngle;
@@ -34,27 +36,27 @@ public class Table extends JPanel implements ActionListener {
     int whiteBall_state=1;
 
     public static PallaBianca whiteBall; //palla bianca che il giocatore colpisce
-    public List<Ball> palleInGioco;
+    public static List<Ball> palleInGioco=new ArrayList<Ball>(15);
 
     private static int DELAY = 1;
 
     private int dispose1=15; //aumenta se aumenti raggio palline, serve per disporr le palline in buca
     private int dispose2=15;
 
-    Point p_shoot=new Point();
-    Point[] pit = new Point[6]; //array per le buche
 
-    String[][] pack = new String[4][5];
+    public static Point[] pit = new Point[6]; //array per le buche
 
-    BufferedImage background;
-    BufferedImage prov;
-    Image BilFrame;
+    public static String[][] pack = new String[4][5];
+
+    public static BufferedImage background;
+    public static BufferedImage prov;
+    public static Image BilFrame;
 
     int pit_cont=0;
 
-    BufferedImage wood;
-    BufferedImage field;
-    BufferedImage whiteDot;
+    public static BufferedImage wood;
+    public static BufferedImage field;
+    public static BufferedImage whiteDot;
     double angle;
     boolean ballClick=false;
     JButton restart=new JButton();
@@ -71,6 +73,7 @@ public class Table extends JPanel implements ActionListener {
     int cont=0; //se è pari aumenta il delay
     int coin_trigger=0;
     double angle_shoot;
+    CommandPaint paintSchedule=new ConcreteCompaint();
 
     public Table() {
         initBoard();
@@ -83,6 +86,10 @@ public class Table extends JPanel implements ActionListener {
         addMouseMotionListener(new Adapt());
         addMouseListener(new Adapt());
         addKeyListener(new Adapt());
+        pack= ImagePackage.getPack();
+
+        Command initialSchedule=new ConcreteCommand();
+        initialSchedule.execute();
 
 
         shoot_label.setText("total shoot "+num);
@@ -92,10 +99,6 @@ public class Table extends JPanel implements ActionListener {
         //provo a mettere le palline piu lontane tra loro
         //cambio 10 con 15
 
-        palleInGioco = InitialBallState.init_ball_pos();
-
-
-
         whiteBall = new PallaBianca(initialPos.x, initialPos.y,0);
         Ball.setBallStop(palleInGioco);
         whiteBall.movimentoRimanente=0;
@@ -104,9 +107,8 @@ public class Table extends JPanel implements ActionListener {
 
         //-----------------------------------------------------------------------------------------------------------
         steccaP = cueFactory.getCue(String.valueOf(cueChooser.set_cue));
-        pack=ImagePackage.getPack();
-        pit= PitPosition.setPit();
-        loadImage();
+
+
         timer = new Timer(DELAY, this);
         timer.start();
         setVisible(true);
@@ -186,54 +188,6 @@ public class Table extends JPanel implements ActionListener {
 
     }
 
-
-    public void loadImage() {
-        try {
-            prov = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/campoInter.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            BilFrame = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/bordoCampoR2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            background = ImageIO.read(new File(pack[1][backgroundChooser.set_background]));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            wood = ImageIO.read(new File(pack[0][fieldChooser.set_board]));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            field = ImageIO.read(new File(pack[2][carpetChooser.set_carpet]));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            whiteDot = ImageIO.read(new File("C:/Users/samuele/IdeaProjects/EsameING/src/main/resources/images/white.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setTable(Graphics2D g2d) {
-        //floor
-        TexturePaint tpb = new TexturePaint(background, new Rectangle(300, 300));
-        g2d.setPaint(tpb);
-        g2d.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
-
-        TexturePaint tp = new TexturePaint(wood, new Rectangle(100, 100));
-        g2d.setPaint(tp);
-        g2d.setStroke(new BasicStroke(110.0f));
-        g2d.drawRoundRect(x_board, y_board, standard_width * size_const, standard_height * size_const, 1, 1);
-
-
-    }
-
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         shoot_label.setText("total shoot: "+num);
@@ -245,31 +199,22 @@ public class Table extends JPanel implements ActionListener {
         */
         if(whiteBall.movimentoRimanente<=0) {
             if(Ball.checkMove(palleInGioco))
-                setTable(g2d);
+                PaintTable.pain(g2d);
         }
         if(control==1){
-            setTable(g2d);
+           PaintTable.pain(g2d);
 
             control=0;
         }
 
-        TexturePaint tp2 = new TexturePaint(field, new Rectangle(300, 200));
-        g2d.setPaint(tp2);
-        g2d.fillRect(x_board+2,y_board+2,standard_width * size_const, standard_height * size_const);
+
+        paintSchedule.execute(g2d);
 
 
-        //check collision con i 4 rettagoli
-        g2d.setPaint(Color.darkGray);
-        g2d.fillRect(x_board, y_board + 20, 10, 300);
-        g2d.fillRect(BOARD_WIDTH - x_board - 8, y_board + 20, 10, 300);
-        g2d.fillRect(x_board,y_board,560,10);
-        g2d.fillRect(x_board,BOARD_HEIGHT-y_board,560,10);
-        //buche
-        for (Point point : pit) {
-            g2d.fillOval(point.x, point.y, pit_dim, pit_dim);
-        }
-        g2d.setColor(Color.white);
-        g2d.fillOval(BOARD_WIDTH / 2 - 5, BOARD_HEIGHT / 2 - 5, 10, 10);
+
+
+
+
 
 
         Ball.setColore(Color.white);
@@ -364,7 +309,7 @@ public class Table extends JPanel implements ActionListener {
         @Override
         public void mouseClicked(MouseEvent e){
             if(whiteBall_state==1){
-            DELAY=1;
+            DELAY=10;
             cont=0;
             control=1;
             coin_trigger=1;
